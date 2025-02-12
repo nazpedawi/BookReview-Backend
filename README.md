@@ -44,3 +44,12 @@ docker compose down
 
 - The entry point for the application is `app/public/index.php`. Start there and trace the control flow through the routes, controllers and models
 - `insomnia_article_collection.json` can be imported into [Insomnia](https://insomnia.rest/) for API testing
+
+## Code Architecture
+
+The code follows an MVC pattern. Here is an outline of the code structure:
+
+- `public/index.php` - the main entry point of the application with initialization and routes.
+- `controllers` - responsible for logic
+- `models` - responsible for database CRUD
+- `services` - various self contained services. These are primarily used by the controllers and can contain logic for small local services or for interacting with external services (mail send, external apis, etc.).

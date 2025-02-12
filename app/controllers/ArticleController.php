@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\ResponseService;
 use App\Models\ArticleModel;
+use App\Services\QrCodeService;
 
 class ArticleController extends Controller
 {
@@ -25,6 +26,11 @@ class ArticleController extends Controller
     function get($id)
     {
         ResponseService::Send($this->articleModel->get($id));
+    }
+    function getQrCode($id)
+    {
+        $article_url = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/article/" . $id;
+        echo QrCodeService::CreateHtmlPreviewImage($article_url);
     }
     function create()
     {

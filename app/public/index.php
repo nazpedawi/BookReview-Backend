@@ -44,6 +44,11 @@ try {
         $articleController = new ArticleController();
         $articleController->create($_POST);
     }, ["post"]);
+    // generate qr code for article
+    Route::add('/article/qr-code/([a-z-0-9-]*)', function ($id) {
+        $articleController = new ArticleController();
+        $articleController->getQrCode($id);
+    });
 
     /**
      * 404 route handler

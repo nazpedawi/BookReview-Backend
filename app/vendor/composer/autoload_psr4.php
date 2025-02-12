@@ -6,9 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Views\\' => array($baseDir . '/views'),
+    'chillerlan\\Settings\\' => array($vendorDir . '/chillerlan/php-settings-container/src'),
+    'chillerlan\\QRCode\\' => array($vendorDir . '/chillerlan/php-qrcode/src'),
     'App\\Services\\' => array($baseDir . '/services'),
-    'App\\Repositories\\' => array($baseDir . '/repositories'),
     'App\\Models\\' => array($baseDir . '/models'),
     'App\\Controllers\\' => array($baseDir . '/controllers'),
     'App\\' => array($baseDir . '/'),
