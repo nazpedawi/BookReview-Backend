@@ -1,0 +1,134 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-02-12T12:07:18.600Z",
+  "__export_source": "insomnia.desktop.app:v10.3.1",
+  "resources": [
+    {
+      "_id": "req_15952d77bd474465ae63038787a9bc77",
+      "parentId": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "modified": 1739361959236,
+      "created": 1739361902335,
+      "url": "localhost/article/:id",
+      "name": "New Request",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [{ "name": "User-Agent", "value": "insomnia/10.3.1" }],
+      "authentication": {},
+      "metaSortKey": -1739361902335,
+      "isPrivate": false,
+      "pathParameters": [{ "name": "id", "value": "2" }],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "parentId": null,
+      "modified": 1739360270495,
+      "created": 1739360270495,
+      "name": "Article Request Collection",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_84a10633b6484da99380a8fd9091cdf3",
+      "parentId": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "modified": 1739361876173,
+      "created": 1739360399852,
+      "url": "localhost/article",
+      "name": "Create Article",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\t\"title\": \"Modern Architecture Trends\",\n\t\t\"content\": \"Sustainable and smart designs are leading construction...\",\n\t\t\"author\": \"Laura Hall\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "User-Agent", "value": "insomnia/10.3.1" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1739360399852,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_97d8e409468940f9ac8f445254c49e2d",
+      "parentId": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "modified": 1739361886705,
+      "created": 1739360292104,
+      "url": "localhost/articles",
+      "name": "Get Articles",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_9d0adb8ad5584676ace729ef9314c387",
+          "name": "page",
+          "value": "2",
+          "description": "",
+          "disabled": false
+        },
+        {
+          "id": "pair_503d678b3dd8491f8786b589f74d8b29",
+          "name": "",
+          "value": "",
+          "description": "",
+          "disabled": false
+        }
+      ],
+      "headers": [{ "name": "User-Agent", "value": "insomnia/10.3.1" }],
+      "authentication": {},
+      "metaSortKey": -1739360292104,
+      "isPrivate": false,
+      "pathParameters": [],
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_007a39fb9d27441c7428685016ea5b1445ce6174",
+      "parentId": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "modified": 1739360270497,
+      "created": 1739360270497,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1739360270497,
+      "environmentType": "kv",
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_007a39fb9d27441c7428685016ea5b1445ce6174",
+      "parentId": "wrk_d4756ac5752d45d79d5b357ac89f8d65",
+      "modified": 1739360270499,
+      "created": 1739360270499,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    }
+  ]
+}
