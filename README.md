@@ -12,8 +12,8 @@ What's included:
   - MySQL (MariaDB) database
   - PHP MyAdmin
 - A directory structure organized around the MVC pattern
-- composer
-- autoload setup
+- Composer
+- Autoload setup
 
 ## Usage
 
@@ -38,7 +38,8 @@ docker compose down
 
 ## Composer commands
 
-- to run composer commands, docker compose run php composer [arguments]
+- to run composer commands, `docker compose run php composer [arguments]`
+- i.e. to install the QR code library (already done): `docker compose run php composer require chillerlan/php-qrcode`
 
 ## Important files
 
