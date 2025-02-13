@@ -25,6 +25,7 @@ ErrorReportingService::Init();
 /**
  * Main application routes
  */
+// top level fail-safe try/catch
 try {
     /**
      * Article routes

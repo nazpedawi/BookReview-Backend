@@ -10,7 +10,7 @@ class Controller
 {
 
     // ensures all expected fields are set in data object and sends a bad request response if not
-    // used to make sure all expected $_POST fields are at least set
+    // used to make sure all expected $_POST fields are at least set, additional validation may still need to be set
     function validateInput($expectedFields, $data)
     {
         foreach ($expectedFields as $field) {
