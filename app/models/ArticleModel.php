@@ -35,11 +35,39 @@ class ArticleModel extends Model
 
     public function create($article)
     {
-        $query = "insert into articles (title, content, author, posted_at) VALUES (:title, :content, :author, :posted_at)";
+        // Convert ISO date format to MySQL datetime if posted_at is provided
+        $postedAt = isset($article["posted_at"])
+            ? date('Y-m-d H:i:s', strtotime($article["posted_at"]))
+            : date('Y-m-d H:i:s');
+
+        // Extract only the needed properties
+        $data = [
+            "title" => $article["title"],
+            "content" => $article["content"],
+            "author" => $article["author"],
+            "posted_at" => $postedAt
+        ];
+
+        $query = "INSERT INTO articles (title, content, author, posted_at) VALUES (:title, :content, :author, :posted_at)";
         $statement = self::$pdo->prepare($query);
-        $statement->execute([...$article, "posted_at" => date('Y-m-d H:i:s')]);
+        $statement->execute($data);
 
         $newArticleId = self::$pdo->lastInsertId();
         return $this->get($newArticleId);
+    }
+
+    public function update($id, $article)
+    {
+        $query = "UPDATE articles SET title = :title, content = :content, author = :author WHERE id = :id";
+        $statement = self::$pdo->prepare($query);
+        $statement->execute([
+            "id" => $id,
+            "title" => $article["title"],
+            "content" => $article["content"],
+            "author" => $article["author"]
+        ]);
+
+        // Return the updated article
+        return $this->get($id);
     }
 }

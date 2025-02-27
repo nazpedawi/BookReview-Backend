@@ -46,4 +46,18 @@ class ArticleController extends Controller
         // send the newly created object back to user
         ResponseService::Send($newArticle);
     }
+    function update($id)
+    {
+        // get data from PUT request
+        $data = $this->decodePostData();
+
+        // validate input
+        $this->validateInput(["title", "content", "author"], $data);
+
+        // update in DB
+        $updatedArticle = $this->articleModel->update($id, $data);
+
+        // send the updated object back to user
+        ResponseService::Send($updatedArticle);
+    }
 }
