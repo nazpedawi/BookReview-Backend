@@ -60,4 +60,9 @@ class ArticleController extends Controller
         // send the updated object back to user
         ResponseService::Send($updatedArticle);
     }
+    function delete($id)
+    {
+        $this->articleModel->delete($id);
+        ResponseService::Send([], 204);
+    }
 }

@@ -53,6 +53,11 @@ try {
         $articleController = new ArticleController();
         $articleController->update($id);
     }, 'put');
+    // delete article by id
+    Route::add('/articles/([0-9]*)', function ($id) {
+        $articleController = new ArticleController();
+        $articleController->delete($id);
+    }, 'delete');
     // generate qr code for article
     Route::add('/articles/qr-code/([a-z-0-9-]*)', function ($id) {
         $articleController = new ArticleController();

@@ -70,4 +70,11 @@ class ArticleModel extends Model
         // Return the updated article
         return $this->get($id);
     }
+
+    public function delete($id)
+    {
+        $query = "DELETE FROM articles WHERE id = :id";
+        $statement = self::$pdo->prepare($query);
+        $statement->execute(["id" => $id]);
+    }
 }
