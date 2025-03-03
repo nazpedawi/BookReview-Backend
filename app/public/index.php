@@ -50,6 +50,7 @@ try {
     }, ["post"]);
     // update article by id
     Route::add('/articles/([0-9]*)', function ($id) {
+        sleep(3); // adding a timeout to demonstrate UI loading state
         $articleController = new ArticleController();
         $articleController->update($id);
     }, 'put');
