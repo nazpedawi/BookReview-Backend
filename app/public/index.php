@@ -11,7 +11,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Services\EnvService;
 use App\Services\ErrorReportingService;
 use App\Services\ResponseService;
-use App\Controllers\ArticleController;
+use App\Controllers\ReviewController;
+use App\Controllers\BookController;
+use App\Controllers\UserController;
 
 // require vendor libraries
 use Steampixel\Route;
@@ -30,40 +32,68 @@ ResponseService::SetCorsHeaders();
  */
 // top level fail-safe try/catch
 try {
-    /**
-     * Article routes
-     */
-    // paginated get all articles route: /articles?page=1
-    Route::add('/articles', function () {
-        $articleController = new ArticleController();
-        $articleController->getAll();
+
+    // get all books
+    Route::add('/books', function () {
+        $bookController = new BookController();
+        $bookController->getAllBooks();
     });
-    // get article by id
-    Route::add('/articles/([a-z-0-9-]*)', function ($id) {
-        $articleController = new ArticleController();
-        $articleController->get($id);
+
+    // get a specific book and its reviews
+    Route::add('/books/([a-z-0-9-]*)', function ($id) {
+        $bookController = new BookController();
+        $reviewController = new ReviewController();
+        
+        $book = $bookController->getBookById($id);
+        if ($book) {
+            $reviews = $reviewController->getAllReviewsByBookId($id);
+    
+            $response = [
+                'book' => $book,
+                'reviews' => $reviews
+            ];
+
+            ResponseService::Send($response);
+        } else {
+            ResponseService::Error("Book not found.", 404);
+        }
     });
-    // create article route
-    Route::add('/articles', function () {
-        $articleController = new ArticleController();
-        $articleController->create($_POST);
-    }, ["post"]);
-    // update article by id
-    Route::add('/articles/([0-9]*)', function ($id) {
-        sleep(3); // adding a timeout to demonstrate UI loading state
-        $articleController = new ArticleController();
-        $articleController->update($id);
-    }, 'put');
-    // delete article by id
-    Route::add('/articles/([0-9]*)', function ($id) {
-        $articleController = new ArticleController();
-        $articleController->delete($id);
+    
+    // delete a book
+    Route::add('/books/([0-9]*)', function ($id) {
+        $bookController = new BookController();
+        $bookController->deleteBook($id);
     }, 'delete');
-    // generate qr code for article
-    Route::add('/articles/qr-code/([a-z-0-9-]*)', function ($id) {
-        $articleController = new ArticleController();
-        $articleController->getQrCode($id);
-    });
+
+    // create a new book
+    Route::add('/books', function () {
+    $bookController = new BookController();
+    $bookController->createBook($_POST);
+    }, ["post"]);
+
+    // create a review for a book
+    Route::add('/reviews', function () {
+        $reviewController = new ReviewController();
+        $reviewController->createReview($_POST);
+    }, ["post"]);
+    
+    // user sign up 
+    Route::add('/users/signup', function () {
+    $userController = new UserController();
+    $userController->create($_POST);
+    }, ["post"]);
+
+    // user login
+    Route::add('/users/login', function () {
+    $userController = new UserController();
+    $userController->authenticate($_POST);
+    }, ["post"]);
+
+    // update book
+    Route::add('/books/([0-9]*)', function ($id) {
+        $bookController = new BookController();
+        $bookController->updateBook($id);
+    }, 'put');
 
     /**
      * 404 route handler

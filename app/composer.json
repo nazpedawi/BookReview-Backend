@@ -8,8 +8,7 @@
     }
   ],
   "require": {
-    "steampixel/simple-php-router": "^0.7.1",
-    "chillerlan/php-qrcode": "^5.0"
+    "steampixel/simple-php-router": "^0.7.1"
   },
   "autoload": {
     "psr-4": {

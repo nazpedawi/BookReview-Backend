@@ -9,7 +9,7 @@ class EnvService
     {
         // database
         $_ENV["DB_HOST"] = "mysql";
-        $_ENV["DB_NAME"] = "developmentdb";
+        $_ENV["DB_NAME"] = "WebDevelopment2DB";
         $_ENV["DB_USER"] = "user";
         $_ENV["DB_PASSWORD"] = "password";
         $_ENV["DB_CHARSET"] = "utf8mb4";
