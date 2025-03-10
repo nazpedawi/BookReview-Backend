@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 class ReviewModel extends Model
 {
     public function __construct()
@@ -31,7 +30,7 @@ class ReviewModel extends Model
     }
 
     public function createReview($review)
-{
+    {
     $data = [
     ':book_id' => $review["book_id"],
         ':user_id' => $review["user_id"],
@@ -45,9 +44,9 @@ class ReviewModel extends Model
     $stmt->execute($data);
 
     return $this->getReviewById(self::$pdo->lastInsertId());
-}
+    }
 
-public function getReviewById(int $reviewId)
+    public function getReviewById(int $reviewId)
     {
         $query = self::$pdo->prepare(
             'SELECT r.review_id, r.book_id, r.user_id, r.rating, r.review_text, r.review_date, 

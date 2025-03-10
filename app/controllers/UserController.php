@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\ResponseService;
 use App\Models\UserModel;
+use Firebase\JWT\JWT;
 
 class UserController extends Controller
 {
@@ -47,10 +48,29 @@ class UserController extends Controller
         $user = $this->userModel->authenticate($data['username'], $data['password']);
 
         if ($user) {
-            ResponseService::Send($user); // Successfully authenticated
+            $token = $this->generateJWT($user);
+            ResponseService::Send(['token' => $token, 'user' => $user]);
+            
         } else {
-            ResponseService::Send([], 401); // Unauthorized
+            ResponseService::Error('Invalid username or password', 401);
         }
+    }
+
+    private function generateJWT($user)
+    {
+        $issuedAt = time();
+        $expire = $issuedAt + 3600 * 4; // 4 hours
+
+        $payload = [
+            'iat' => $issuedAt,
+            'exp' => $expire,
+            'user' => [
+                'id' => $user['user_id'],
+                'username' => $user['username']
+            ]
+        ];
+
+        return JWT::encode($payload, $_ENV["JWT_SECRET"], 'HS256');
     }
 
 }

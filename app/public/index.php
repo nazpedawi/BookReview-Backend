@@ -83,7 +83,7 @@ try {
     $userController->create($_POST);
     }, ["post"]);
 
-    // user login
+    // user login and JWT generation
     Route::add('/users/login', function () {
     $userController = new UserController();
     $userController->authenticate($_POST);

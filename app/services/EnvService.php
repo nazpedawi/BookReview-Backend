@@ -15,5 +15,6 @@ class EnvService
         $_ENV["DB_CHARSET"] = "utf8mb4";
         // env flag
         $_ENV["ENV"] = "LOCAL";
+        $_ENV["JWT_SECRET"] = "8RXVjZIyszZEZSyb6h2C6xdNnH3FD2eh";
     }
 }

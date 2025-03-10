@@ -8,7 +8,8 @@
     }
   ],
   "require": {
-    "steampixel/simple-php-router": "^0.7.1"
+    "steampixel/simple-php-router": "^0.7.1",
+    "firebase/php-jwt": "^6.11"
   },
   "autoload": {
     "psr-4": {
