@@ -43,6 +43,8 @@ try {
     Route::add('/books/([a-z-0-9-]*)', function ($id) {
         $bookController = new BookController();
         $reviewController = new ReviewController();
+
+        sleep(2); 
         
         $book = $bookController->getBookById($id);
         if ($book) {
@@ -76,6 +78,13 @@ try {
         $reviewController = new ReviewController();
         $reviewController->createReview($_POST);
     }, ["post"]);
+
+    // get all genres
+    Route::add('/genres', function () {
+        $bookController = new BookController();
+        $bookController->getAllGenres();
+    }, ["get"]);
+    
     
     // user sign up 
     Route::add('/users/signup', function () {

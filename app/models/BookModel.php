@@ -11,19 +11,43 @@ class BookModel extends Model
     
     public function getAllBooks()
     {
-        $query = self::$pdo->prepare(
-            'SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
-                    GROUP_CONCAT(g.name) AS genres 
-             FROM Books b
-             LEFT JOIN book_genres bg ON b.book_id = bg.book_id
-             LEFT JOIN Genres g ON bg.genre_id = g.genre_id
-             GROUP BY b.book_id
-             ORDER BY b.title ASC'
-        );
-    
-        $query->execute();
-    
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    $query = (
+        'SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
+                GROUP_CONCAT(g.name) AS genres 
+         FROM Books b
+         LEFT JOIN book_genres bg ON b.book_id = bg.book_id
+         LEFT JOIN Genres g ON bg.genre_id = g.genre_id
+         GROUP BY b.book_id
+         ORDER BY b.title ASC'
+    );
+
+    $statement = self::$pdo->prepare($query);
+    $statement->execute();
+
+    $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    foreach ($result as &$book) {
+        $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
+    }
+
+        return $result;  
+    }
+
+    public function getAllGenres()
+    {
+        $query = "SELECT genre_id, name FROM Genres";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->execute();
+
+    $genres = [];
+    while ($row = $stmt->fetch()) {
+        $genres[] = [
+            'id' => $row['genre_id'],
+            'name' => $row['name']
+        ];
+    }
+
+        return $genres;
     }
 
     public function getBookById(int $id)
@@ -58,10 +82,6 @@ class BookModel extends Model
 
     public function createBook($book)
     {
-         if (empty($book["title"]) || empty($book["description"]) || empty($book["author"]) || empty($book["publication_year"]) || empty($book["genres"]) || count($book["genres"]) < 1) {
-         throw new Exception("All fields are required, and at least one genre must be provided.");
-    }
-
          $data = [
         "title" => $book["title"],
         "description" => $book["description"],

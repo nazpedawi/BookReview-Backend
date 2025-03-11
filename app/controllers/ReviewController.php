@@ -31,7 +31,7 @@ class ReviewController extends Controller
 
     $this->validateInput(["review_text", "rating"], $data);
 
-    // Check if rating is valid (e.g., between 1 and 5)
+    // Check if rating is valid (between 1 and 5)
     if ($data["rating"] < 1 || $data["rating"] > 5) {
         ResponseService::Send("Rating must be between 1 and 5.", 400);
         return;

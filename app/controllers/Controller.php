@@ -24,10 +24,13 @@ class Controller
     // gets the post data and returns it as an array
     function decodePostData()
     {
-        try {
-            return json_decode(file_get_contents('php://input'), true);
-        } catch (\Throwable $th) {
-            ResponseService::Error("error decoding JSON in request body", 400);
-        }
+         // Check if the request is JSON (Content-Type: application/json)
+    if (isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "application/json") !== false) {
+        $json = file_get_contents("php://input");
+        return json_decode($json, true) ?? [];
+    }
+
+    // Otherwise, assume it's form data (Content-Type: multipart/form-data)
+    return $_POST;
     }
 }
