@@ -133,12 +133,12 @@ class BookModel extends Model
         "cover_image" => $book["cover_image"]
     ]);
 
-    // Optionally, update the genres if provided
+    // update the genres if provided
     if (isset($book["genres"])) {
         $this->updateBookGenres($id, $book["genres"]);
     }
 
-    return $this->getBookById($id);
+      return $this->getBookById($id);
     }
 
     public function updateBookGenres($bookId, $genres)

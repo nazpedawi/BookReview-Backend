@@ -36,7 +36,7 @@ class BookController extends Controller
     }
 
     function createBook()
-{
+    {
     $data = $this->decodePostData();
 
     // Handle file upload only if it exists
@@ -44,7 +44,7 @@ class BookController extends Controller
         $data['cover_image'] = $this->handleFileUpload($_FILES['cover_image']);
     }
 
-    // Ensure genres is an array (decode if needed)
+    // Ensure genres is an array
     if (isset($data['genres']) && is_string($data['genres'])) {
         $data['genres'] = json_decode($data['genres'], true);
     }
@@ -64,7 +64,7 @@ class BookController extends Controller
 
 
     private function handleFileUpload($file)
-{
+    {
     // Check if the file was uploaded without errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("Error uploading the cover image.");
@@ -77,7 +77,7 @@ class BookController extends Controller
     // Validate file type (you can extend this validation)
     $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!in_array($file['type'], $allowedTypes)) {
-        throw new Exception("Invalid file type. Only JPG, PNG, and GIF files are allowed.");
+        throw new Exception("Invalid file type. Only JPG, PNG, and WEBP files are allowed.");
     }
 
     // Move the uploaded file to the server directory
@@ -86,7 +86,7 @@ class BookController extends Controller
     }
 
     // Return the path of the uploaded file
-    return $uploadFile;
+    return  basename($file['name']);
 }
 
     function updateBook($id)
