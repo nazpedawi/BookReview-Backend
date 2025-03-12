@@ -21,16 +21,18 @@ class Controller
         }
     }
 
-    // gets the post data and returns it as an array
     function decodePostData()
-    {
-         // Check if the request is JSON (Content-Type: application/json)
+{
+    // Check if the request is JSON (Content-Type: application/json)
     if (isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "application/json") !== false) {
         $json = file_get_contents("php://input");
         return json_decode($json, true) ?? [];
     }
 
-    // Otherwise, assume it's form data (Content-Type: multipart/form-data)
+    // Otherwise, assume it's form data (Content-Type: multipart/form-data) for POST requests
     return $_POST;
-    }
+}
+
+
+
 }

@@ -52,24 +52,34 @@ class BookModel extends Model
 
     public function getBookById(int $id)
     {
-        $query = "SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
-                     GROUP_CONCAT(g.name) AS genres
-              FROM Books b
-              LEFT JOIN book_genres bg ON b.book_id = bg.book_id
-              LEFT JOIN Genres g ON bg.genre_id = g.genre_id
-              WHERE b.book_id = :id
-              GROUP BY b.book_id";
-
-        $statement = self::$pdo->prepare($query);
-        $statement->execute(["id" => $id]);
-
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-
-    if ($result) {
-        $result['genres'] = explode(',', $result['genres']);  // Ensure this is an array
-    }
-
-        return $result;  // Return the book with genres as an array
+            // Fetch book details
+            $query = "SELECT book_id, title, description, author, publication_year, cover_image
+                      FROM Books
+                      WHERE book_id = :id";
+        
+            $statement = self::$pdo->prepare($query);
+            $statement->execute(["id" => $id]);
+            $book = $statement->fetch(\PDO::FETCH_ASSOC);
+        
+            if (!$book) {
+                return null; // Book not found
+            }
+        
+            // Fetch genres for the book
+            $query = "SELECT g.genre_id, g.name 
+                      FROM Genres g
+                      JOIN book_genres bg ON g.genre_id = bg.genre_id
+                      WHERE bg.book_id = :id";
+        
+            $statement = self::$pdo->prepare($query);
+            $statement->execute(["id" => $id]);
+            $genres = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        
+            // Attach genres as an array of objects
+            $book['genres'] = $genres;
+        
+            return $book;
+        
     }
 
 

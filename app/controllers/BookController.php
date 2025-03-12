@@ -75,9 +75,9 @@ class BookController extends Controller
     $uploadFile = $uploadDir . basename($file['name']);
 
     // Validate file type (you can extend this validation)
-    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
     if (!in_array($file['type'], $allowedTypes)) {
-        throw new Exception("Invalid file type. Only JPG, PNG, and WEBP files are allowed.");
+        throw new Exception("Invalid file type. Only JPG, JPEG, PNG and WEBP files are allowed.");
     }
 
     // Move the uploaded file to the server directory
@@ -89,21 +89,32 @@ class BookController extends Controller
     return  basename($file['name']);
 }
 
-    function updateBook($id)
-    {
-        $data = $this->decodePostData();
+function updateBook($id)
+{
+    $data = $this->decodePostData();
 
-        $this->validateInput(["title", "description", "author", "publication_year", "genres", "cover_image"], $data);
-
-        if (empty($data["genres"]) || count($data["genres"]) < 1) {
-            ResponseService::Send("At least one genre is required.", 400);
-            return;
-        }
-
-        $updatedBook = $this->bookModel->updateBook($id, $data);
-
-        ResponseService::Send($updatedBook);
+    // Handle file upload only if it exists
+    if (!empty($_FILES['cover_image'])) {
+        $data['cover_image'] = $this->handleFileUpload($_FILES['cover_image']);
     }
+
+    // Ensure genres is an array
+    if (isset($data['genres']) && is_string($data['genres'])) {
+        $data['genres'] = json_decode($data['genres'], true);
+    }
+
+    // Validate input
+    $this->validateInput(["title", "description", "author", "publication_year", "genres"], $data);
+
+    if (empty($data["genres"]) || !is_array($data["genres"]) || count($data["genres"]) < 1) {
+        ResponseService::Send("At least one genre is required.", 400);
+        return;
+    }
+
+    $updatedBook = $this->bookModel->updateBook($id,$data);
+
+    ResponseService::Send($updatedBook);
+}
 
     
 }

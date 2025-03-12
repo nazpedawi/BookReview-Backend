@@ -98,11 +98,11 @@ try {
     $userController->authenticate($_POST);
     }, ["post"]);
 
-    // update book
+    // update book, used POST intead of PUT because the form to update a book is a multipart form data and file uploads was givivng issues with PUT
     Route::add('/books/([0-9]*)', function ($id) {
         $bookController = new BookController();
         $bookController->updateBook($id);
-    }, 'put');
+    }, 'post');
 
     /**
      * 404 route handler
