@@ -5,6 +5,8 @@
 namespace App\Controllers;
 
 use App\Services\ResponseService;
+use Firebase\JWT\Key;
+use Firebase\JWT\JWT;
 
 class Controller
 {
@@ -33,6 +35,59 @@ class Controller
     return $_POST;
 }
 
+public function getAuthenticatedUser()
+    {
+        // Get all HTTP headers from the request
+        $headers = getallheaders();
 
+        // Check if Authorization header exists in the request
+        if (!isset($headers['Authorization'])) {
+            ResponseService::Error('No token provided', 401);
+        }
 
+        // Remove 'Bearer ' prefix from the Authorization header to get the raw token
+        $token = str_replace('Bearer ', '', $headers['Authorization']);
+
+        try {
+            // Verify and decode the JWT token using the secret key
+            // If token is invalid or expired, this will throw an exception
+            $token_data = JWT::decode($token, new Key($_ENV["JWT_SECRET"], 'HS256'));
+            return $token_data->user;
+        } catch (\Exception $e) {
+            // Return 401 Unauthorized if token is invalid
+            ResponseService::Error('Invalid token', 401);
+        }
+    }
+
+    public function validateIsMe($id)
+    {
+        // Get the authenticated user from the JWT token
+        $user = $this->getAuthenticatedUser();
+
+        // Check if the authenticated user's ID matches the requested resource ID
+        // Cast the requested ID to integer to ensure type-safe comparison
+        if (empty($user) || $user->id !== (int)$id) {
+            // Return 403 Forbidden if user tries to access another user's resource
+            ResponseService::Error('You are not authorized to access this resource', 403);
+            exit();
+        }
+
+        return $user;
+    }
+
+    function checkIfAdmin()
+    {
+         $user = $this->getAuthenticatedUser();
+
+        // Check if the user is an admin
+        if ($user->role !== 'Admin') {
+        ResponseService::Error('Unauthorized, Admins only', 403);
+        exit();
+        }
+    
+         if ($user->role == 'Admin') {
+         ResponseService::Send('You are an admin');
+        }
+    }
 }
+

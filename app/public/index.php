@@ -97,6 +97,22 @@ try {
     $userController->authenticate($_POST);
     }, ["post"]);
 
+    Route::add('/users/me', function () {
+    $userController = new UserController();
+    $userController->me();
+    }, ["get"]);
+
+    Route::add('/users/is-me/([0-9]*)', function ($id) {
+    $userController = new UserController();
+    $userController->isMe($id);
+    }, ['get']);
+
+    Route::add('/users/is-admin', function () {
+        $userController = new UserController();
+        $userController->checkIfAdmin();
+        }, ['get']);
+
+
     /*
  * Update Book
  * Used POST instead of PUT.

@@ -49,7 +49,7 @@ class UserController extends Controller
 
         if ($user) {
             $token = $this->generateJWT($user);
-            ResponseService::Send(['token' => $token, 'user' => $user]);
+            ResponseService::Send(['token' => $token]);
             
         } else {
             ResponseService::Error('Invalid username or password', 401);
@@ -66,11 +66,29 @@ class UserController extends Controller
             'exp' => $expire,
             'user' => [
                 'id' => $user['user_id'],
-                'username' => $user['username']
+                'username' => $user['username'],
+                'role' => $user['role']
             ]
         ];
 
         return JWT::encode($payload, $_ENV["JWT_SECRET"], 'HS256');
     }
+
+    public function me()
+    {
+        ResponseService::Send($this->getAuthenticatedUser());
+    }
+
+    public function isMe($id)
+    {
+        $this->validateIsMe($id);
+        ResponseService::Send(['message' => 'You are authorized to access this resource']);
+    }
+
+    public function isAdmin()
+    {
+        ResponseService::Send($this->checkIfAdmin());
+    }
+
 
 }
