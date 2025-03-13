@@ -85,7 +85,6 @@ try {
         $bookController->getAllGenres();
     }, ["get"]);
     
-    
     // user sign up 
     Route::add('/users/signup', function () {
     $userController = new UserController();
@@ -98,7 +97,12 @@ try {
     $userController->authenticate($_POST);
     }, ["post"]);
 
-    // update book, used POST intead of PUT because the form to update a book is a multipart form data and file uploads was givivng issues with PUT
+    /*
+ * Update Book
+ * Used POST instead of PUT.
+ * Because the updatebook  form is multipart/form-data, and file uploads were causing issues with PUT.
+ */
+
     Route::add('/books/([0-9]*)', function ($id) {
         $bookController = new BookController();
         $bookController->updateBook($id);

@@ -32,7 +32,7 @@ class BookController extends Controller
     function deleteBook($id)
     {
         $this->bookModel->deleteBook($id);
-        ResponseService::Send([], 204);
+        ResponseService::Send('Book deleted succesfully', 204);
     }
 
     function createBook()
