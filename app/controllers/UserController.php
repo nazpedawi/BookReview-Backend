@@ -29,8 +29,7 @@ class UserController extends Controller
         // Save to DB
         $newUser = $this->userModel->create($data);
 
-        // Send the newly created user back to the user
-        ResponseService::Send($newUser);
+        ResponseService::Send(["success" => true, "message" => "User created successfully."]);
     }
 
     /**
@@ -78,17 +77,4 @@ class UserController extends Controller
     {
         ResponseService::Send($this->getAuthenticatedUser());
     }
-
-    public function isMe($id)
-    {
-        $this->validateIsMe($id);
-        ResponseService::Send(['message' => 'You are authorized to access this resource']);
-    }
-
-    public function isAdmin()
-    {
-        ResponseService::Send($this->checkIfAdmin());
-    }
-
-
 }

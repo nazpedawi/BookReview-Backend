@@ -44,7 +44,7 @@ try {
         $bookController = new BookController();
         $reviewController = new ReviewController();
 
-        sleep(2); 
+        sleep(2); // to simulate a loading spinenr in the UI
         
         $book = $bookController->getBookById($id);
         if ($book) {
@@ -102,27 +102,15 @@ try {
     $userController->me();
     }, ["get"]);
 
-    Route::add('/users/is-me/([0-9]*)', function ($id) {
-    $userController = new UserController();
-    $userController->isMe($id);
-    }, ['get']);
-
-    Route::add('/users/is-admin', function () {
-        $userController = new UserController();
-        $userController->checkIfAdmin();
-        }, ['get']);
-
-
     /*
- * Update Book
- * Used POST instead of PUT.
- * Because the updatebook  form is multipart/form-data, and file uploads were causing issues with PUT.
- */
-
+    * Update Book, Used POST instead of PUT.
+    * Because the updatebook  form is multipart/form-data, and file uploads were causing issues with PUT.
+    */
     Route::add('/books/([0-9]*)', function ($id) {
-        $bookController = new BookController();
-        $bookController->updateBook($id);
+    $bookController = new BookController();
+    $bookController->updateBook($id);
     }, 'post');
+
 
     /**
      * 404 route handler

@@ -24,18 +24,18 @@ class Controller
     }
 
     function decodePostData()
-{
-    // Check if the request is JSON (Content-Type: application/json)
-    if (isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "application/json") !== false) {
-        $json = file_get_contents("php://input");
-        return json_decode($json, true) ?? [];
-    }
+    {
+        // Check if the request is JSON (Content-Type: application/json)
+         if (isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "application/json") !== false) {
+                $json = file_get_contents("php://input");
+                return json_decode($json, true) ?? [];
+             }
 
     // Otherwise, assume it's form data (Content-Type: multipart/form-data) for POST requests
     return $_POST;
-}
+    }
 
-public function getAuthenticatedUser()
+    public function getAuthenticatedUser()
     {
         // Get all HTTP headers from the request
         $headers = getallheaders();
@@ -56,37 +56,6 @@ public function getAuthenticatedUser()
         } catch (\Exception $e) {
             // Return 401 Unauthorized if token is invalid
             ResponseService::Error('Invalid token', 401);
-        }
-    }
-
-    public function validateIsMe($id)
-    {
-        // Get the authenticated user from the JWT token
-        $user = $this->getAuthenticatedUser();
-
-        // Check if the authenticated user's ID matches the requested resource ID
-        // Cast the requested ID to integer to ensure type-safe comparison
-        if (empty($user) || $user->id !== (int)$id) {
-            // Return 403 Forbidden if user tries to access another user's resource
-            ResponseService::Error('You are not authorized to access this resource', 403);
-            exit();
-        }
-
-        return $user;
-    }
-
-    function checkIfAdmin()
-    {
-         $user = $this->getAuthenticatedUser();
-
-        // Check if the user is an admin
-        if ($user->role !== 'Admin') {
-        ResponseService::Error('Unauthorized, Admins only', 403);
-        exit();
-        }
-    
-         if ($user->role == 'Admin') {
-         ResponseService::Send('You are an admin');
         }
     }
 }
