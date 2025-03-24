@@ -48,8 +48,7 @@ class UserController extends Controller
 
         if ($user) {
             $token = $this->generateJWT($user);
-            ResponseService::Send(['token' => $token]);
-            
+            ResponseService::Send(['token' => $token, 'user' => $user]);
         } else {
             ResponseService::Error('Invalid username or password', 401);
         }
