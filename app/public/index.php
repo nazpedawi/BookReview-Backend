@@ -36,8 +36,19 @@ try {
     // get all books
     Route::add('/books', function () {
         $bookController = new BookController();
-        $bookController->getAllBooks();
+        
+        // Get query parameters
+        $search = $_GET['search'] ?? null;
+        $genre = $_GET['genre'] ?? null;
+    
+        // Call appropriate method
+        if (empty($search) && empty($genre)) {
+            $books = $bookController->getAllBooks(); 
+        } else {
+            $books = $bookController->getFilteredBooks($search, $genre);
+        }
     });
+    
 
     // get a specific book and its reviews
     Route::add('/books/([a-z-0-9-]*)', function ($id) {

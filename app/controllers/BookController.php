@@ -19,6 +19,11 @@ class BookController extends Controller
         ResponseService::Send($this->bookModel->getAllBooks());
     }
 
+    public function getFilteredBooks($searchQuery, $genre)
+    {
+        ResponseService::Send($this->bookModel->getFilteredBooks($searchQuery, $genre));
+    }
+
     function getAllGenres()
     {
         ResponseService::Send($this->bookModel->getAllGenres());

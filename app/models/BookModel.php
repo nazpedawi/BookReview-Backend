@@ -33,6 +33,58 @@ class BookModel extends Model
         return $result;  
     }
 
+    public function getFilteredBooks($searchQuery = '', $genre = '')
+{
+    $query = '
+        SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
+               GROUP_CONCAT(g.name) AS genres
+        FROM Books b
+        LEFT JOIN book_genres bg ON b.book_id = bg.book_id
+        LEFT JOIN Genres g ON bg.genre_id = g.genre_id
+    ';
+
+    $params = [];
+    $filters = [];
+
+    // Filter by search query if provided
+    if (!empty($searchQuery)) {
+        $filters[] = "b.title LIKE :searchQuery";
+        $params[':searchQuery'] = '%' . $searchQuery . '%';
+    }
+
+    // Filter by genre if provided
+    if (!empty($genre)) {
+        // Only include books that have the given genre
+        $filters[] = "g.name LIKE :genre";
+        $params[':genre'] = '%' . $genre . '%';
+    }
+
+    // Apply any filters
+    if (!empty($filters)) {
+        $query .= " WHERE " . implode(" AND ", $filters);
+    }
+
+    // Group the results by book_id
+    $query .= " GROUP BY b.book_id ORDER BY b.title ASC";
+
+    $stmt = self::$pdo->prepare($query);
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
+    }
+    $stmt->execute();
+    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    // Convert the concatenated genres string into an array
+    foreach ($result as &$book) {
+        $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
+    }
+
+    return $result;
+}
+
+
+
+
     public function getAllGenres()
     {
         $query = "SELECT genre_id, name FROM Genres";
