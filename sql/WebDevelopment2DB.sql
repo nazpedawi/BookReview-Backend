@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 27, 2025 at 04:30 PM
+-- Generation Time: Mar 27, 2025 at 05:38 PM
 -- Server version: 11.5.2-MariaDB-ubu2404
 -- PHP Version: 8.2.25
 
@@ -41,7 +41,7 @@ CREATE TABLE `Books` (
 --
 
 INSERT INTO `Books` (`book_id`, `title`, `description`, `author`, `publication_year`, `cover_image`) VALUES
-(2, 'Pride and Prejudice', 'A romantic novel that centers on Elizabeth Bennet and her complex relationship with the proud Mr. Darcy. The novel explores themes of social class, marriage, and personal growth.', 'Jane Austen', 1900, 'book_2.jpg'),
+(2, 'Pride and Prejudice', 'a classic tale of love, manners, and social expectations in early 19th-century England. The story follows Elizabeth Bennet, a sharp-witted and independent young woman, as she navigates the complexities of family, class, and romance. When she meets the wealthy and aloof Mr. Darcy, initial misunderstandings and pride lead to tension between them. However, as the story unfolds, Elizabeth and Darcy both confront their own prejudices and learn about love, self-reflection, and the importance of personal growth. With its memorable characters, witty dialogue, and timeless themes, Pride and Prejudice remains one of the most beloved novels in English literature.', 'Jane Austen', 1900, 'book_2.jpg'),
 (3, 'The Great Gatsby', 'Set in the Roaring Twenties, the novel tells the story of Jay Gatsby, a wealthy and mysterious man who is obsessed with the love of his life, Daisy Buchanan. It explores themes of the American Dream, wealth, and the moral decay of society.', 'Scott Fitzgerald', 1925, 'book_3.webp'),
 (63, 'The Road', 'his Pulitzer Prize-winning novel follows a father and his young son as they struggle to survive in a post-apocalyptic world where the sun has been obscured by ash, and humanity has descended into barbarism. With only their love for each other to keep them going, they travel through a desolate, cold landscape filled with danger. McCarthy’s spare, haunting prose highlights themes of survival, love, and the human condition.\r\n', ' Cormac McCarthy', 2006, '510x840.jpg'),
 (64, 'The Kite Runner', 'Set against the backdrop of Afghanistan’s tumultuous history, The Kite Runner follows the friendship between two boys, Amir and Hassan. Despite being from different social classes, they share an intense bond until betrayal shatters their relationship. The novel explores themes of guilt, redemption, and the impact of historical events on personal lives, as Amir returns to Afghanistan years later to seek forgiveness and come to terms with his past.', 'Khaled Hosseini', 2003, '521x840.jpg'),
@@ -99,6 +99,7 @@ INSERT INTO `book_genres` (`book_id`, `genre_id`) VALUES
 (3, 16),
 (74, 17),
 (67, 19),
+(2, 21),
 (74, 21),
 (75, 21);
 
@@ -165,7 +166,9 @@ INSERT INTO `Reviews` (`review_id`, `book_id`, `user_id`, `review_text`, `rating
 (12, 3, 15, 'Man, Gatsby’s wild. Dude spends his whole life chasing this idea of the American Dream, but it all turns out to be some fake mess. He’s got money, parties, and the whole world at his feet, but he’s still chasing some chick who’s not even worth it. The whole thing’s just sad—showing how people can be fake and lost even when they got everything. It’s got that old-school 1920s vibe, but the story’s real enough to make you think. Definitely worth a read if you’re into that rich-people drama.', 3, '2024-12-08 16:01:24'),
 (13, 2, 15, 'so this one’s all about love, but with some old-school drama. Elizabeth Bennet’s a strong woman who doesn’t fall for the first rich guy that comes her way, which is honestly kinda rare for the time. Mr. Darcy? Dude’s got a major ego at first, but he’s actually a softie under all that pride. The back-and-forth between them is like a constant game of cat and mouse. It’s slow-paced, but once you’re into it, the tension is real. If you’re cool with some fancy words and old vibes, you’ll see why this book’s a classic.', 4, '2024-12-08 16:02:49'),
 (25, 2, 16, 'one of those books you can&#039;t help but fall in love with. The chemistry between Elizabeth Bennet and Mr. Darcy is so captivating, and their relationship grows in such an interesting way. I absolutely loved how witty and sharp the writing is, and the characters are all so well-crafted. It’s not just a romance, but a clever commentary on social expectations and class. I found myself laughing, getting frustrated, and cheering for Elizabeth as she navigates love and life. Definitely a book that stays with you long after you&#039;ve finished it!', 5, '2024-12-25 16:14:24'),
-(26, 3, 16, ' is often praised for its symbolism and portrayal of the American Dream, I found it to be somewhat underwhelming. The characters, especially Gatsby himself, felt a bit one-dimensional, and I struggled to connect with their motivations. The story’s pacing was slow, and I often found myself frustrated by the superficiality of the characters&#039; actions. Although Fitzgerald’s writing is undeniably poetic, I felt the novel&#039;s overall message about wealth and desire lacked the depth I expected. It’s a book that’s clearly well-regarded, but for me, it didn’t live up to the hype.', 2, '2024-12-25 16:15:48');
+(26, 3, 16, ' is often praised for its symbolism and portrayal of the American Dream, I found it to be somewhat underwhelming. The characters, especially Gatsby himself, felt a bit one-dimensional, and I struggled to connect with their motivations. The story’s pacing was slow, and I often found myself frustrated by the superficiality of the characters&#039; actions. Although Fitzgerald’s writing is undeniably poetic, I felt the novel&#039;s overall message about wealth and desire lacked the depth I expected. It’s a book that’s clearly well-regarded, but for me, it didn’t live up to the hype.', 2, '2024-12-25 16:15:48'),
+(63, 72, 14, 'Always and Forever, Lara Jean by Jenny Han is the perfect ending to the To All the Boys I\'ve Loved Before series. It picks up with Lara Jean wrapping up high school, figuring out her future, and trying to balance her relationship with Peter as they both face new challenges. Jenny Han nails the feels with her relatable writing, capturing the ups and downs of love, growing up, and all the tough decisions that come with it. It\'s a sweet, emotional read that gives fans exactly what they want—closure, growth, and a happy ending for Lara Jean.', 4, '2025-03-27 17:16:15'),
+(64, 74, 14, 'The Hitchhiker’s Guide to the Galaxy by Douglas Adams is a wild and hilarious ride through space. The book follows Arthur Dent, an ordinary guy who’s whisked off Earth just before it’s destroyed to make way for an intergalactic freeway. Along the way, Arthur meets some bizarre characters, including a depressed robot and a two-headed, three-armed president of the galaxy. Adams’ wit and absurd humor shine through as he pokes fun at life, the universe, and everything in it. It’s a quirky, offbeat adventure that’ll leave you laughing and questioning everything at the same time. Definitely a must-read for fans of sci-fi with a comedic twist!', 4, '2025-03-27 17:18:27');
 
 -- --------------------------------------------------------
 
@@ -240,7 +243,7 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Books`
 --
 ALTER TABLE `Books`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `Genres`
@@ -252,7 +255,7 @@ ALTER TABLE `Genres`
 -- AUTO_INCREMENT for table `Reviews`
 --
 ALTER TABLE `Reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `Users`
