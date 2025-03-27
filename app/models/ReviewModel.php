@@ -31,19 +31,19 @@ class ReviewModel extends Model
 
     public function createReview($review)
     {
-    $data = [
-    ':book_id' => $review["book_id"],
+         $data = [
+        ':book_id' => $review["book_id"],
         ':user_id' => $review["user_id"],
         ':review_text' => $review["review_text"],
         ':rating' => $review["rating"]
-    ];
+        ];
 
-    $query = "INSERT INTO Reviews (book_id, user_id, review_text, rating, review_date) 
+        $query = "INSERT INTO Reviews (book_id, user_id, review_text, rating, review_date) 
               VALUES (:book_id, :user_id, :review_text, :rating, NOW())";
-    $stmt = self::$pdo->prepare($query);
-    $stmt->execute($data);
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute($data);
 
-    return $this->getReviewById(self::$pdo->lastInsertId());
+        return $this->getReviewById(self::$pdo->lastInsertId());
     }
 
     public function getReviewById(int $reviewId)

@@ -107,6 +107,7 @@ try {
     $userController->authenticate($_POST);
     }, ["post"]);
 
+    // get logged in user
     Route::add('/users/me', function () {
     $userController = new UserController();
     $userController->me();

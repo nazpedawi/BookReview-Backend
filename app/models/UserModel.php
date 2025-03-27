@@ -8,6 +8,7 @@ class UserModel extends Model
         parent::__construct();
     }
 
+    // Method to create a user (signup)
     public function create($user)
     {
         $hashedPassword = password_hash($user["password"], PASSWORD_DEFAULT);
@@ -26,7 +27,6 @@ class UserModel extends Model
         $statement = self::$pdo->prepare($query);
         $statement->execute($data);
 
-        // Return the created user (using their ID)
         $newUserId = self::$pdo->lastInsertId();
         return $this->getUserById($newUserId);
     }
@@ -67,7 +67,4 @@ class UserModel extends Model
 
         return $statement->fetchColumn() > 0;
     }
-
-    
-    
 }

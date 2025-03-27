@@ -26,23 +26,21 @@ class ReviewController extends Controller
     }
 
     public function createReview()
-{
-    $data = $this->decodePostData();
+    {
+        $data = $this->decodePostData();
 
-    $this->validateInput(["review_text", "rating"], $data);
+        $this->validateInput(["review_text", "rating"], $data);
 
-    // Check if rating is valid (between 1 and 5)
-    if ($data["rating"] < 1 || $data["rating"] > 5) {
-        ResponseService::Send("Rating must be between 1 and 5.", 400);
-        return;
+         // Check if rating is valid (between 1 and 5)
+        if ($data["rating"] < 1 || $data["rating"] > 5) {
+            ResponseService::Send("Rating must be between 1 and 5.", 400);
+            return;
+        }
+
+        // Pass the data to the model to insert the review
+        $newReview = $this->reviewModel->createReview($data);
+
+        // Return the newly created review data as a response
+        ResponseService::Send($newReview);
     }
-
-    // Pass the data to the model to insert the review
-    $newReview = $this->reviewModel->createReview($data);
-
-    // Return the newly created review data as a response
-    ResponseService::Send($newReview);
-}
-
-   
 }

@@ -11,7 +11,7 @@ class BookModel extends Model
     
     public function getAllBooks()
     {
-    $query = (
+        $query = (
         'SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
                 GROUP_CONCAT(g.name) AS genres 
          FROM Books b
@@ -19,82 +19,83 @@ class BookModel extends Model
          LEFT JOIN Genres g ON bg.genre_id = g.genre_id
          GROUP BY b.book_id
          ORDER BY b.title ASC'
-    );
+        );
 
-    $statement = self::$pdo->prepare($query);
-    $statement->execute();
+        $statement = self::$pdo->prepare($query);
+        $statement->execute();
 
-    $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-    foreach ($result as &$book) {
-        $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
-    }
+        foreach ($result as &$book) {
+            $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
+        }
 
         return $result;  
     }
 
     public function getFilteredBooks($searchQuery = '', $genre = '')
-{
-    $query = '
+    {
+         $query = '
         SELECT b.book_id, b.title, b.description, b.author, b.publication_year, b.cover_image, 
-               GROUP_CONCAT(g.name) AS genres
+           GROUP_CONCAT(g.name) AS genres
         FROM Books b
-        LEFT JOIN book_genres bg ON b.book_id = bg.book_id
-        LEFT JOIN Genres g ON bg.genre_id = g.genre_id
-    ';
+         LEFT JOIN book_genres bg ON b.book_id = bg.book_id
+         LEFT JOIN Genres g ON bg.genre_id = g.genre_id
+         ';
 
-    $params = [];
-    $filters = [];
+        $params = [];
+        $filters = [];
 
-    // Filter by search query if provided
-    if (!empty($searchQuery)) {
-        $filters[] = "b.title LIKE :searchQuery";
-        $params[':searchQuery'] = '%' . $searchQuery . '%';
+        // Filter by search query if provided
+        if (!empty($searchQuery)) {
+            $filters[] = "b.title LIKE :searchQuery";
+            $params[':searchQuery'] = '%' . $searchQuery . '%';
+        }
+
+        // Apply any filters
+        if (!empty($filters)) {
+            $query .= " WHERE " . implode(" AND ", $filters);
+        }
+
+        $query .= " GROUP BY b.book_id ORDER BY b.title ASC";
+
+        $stmt = self::$pdo->prepare($query);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Convert the concatenated genres string into an array for each book
+        foreach ($result as &$book) {
+            $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
+        }
+
+        // If a genre filter is provided, filter the books by genre
+        if (!empty($genre)) {
+            $result = array_filter($result, function($book) use ($genre) {
+            // Check if the genre is in the book's genres array
+            return in_array($genre, $book['genres']);
+            });
+        }
+
+        return array_values($result);
     }
-
-    // Filter by genre if provided
-    if (!empty($genre)) {
-        // Only include books that have the given genre
-        $filters[] = "g.name = :genre";
-        $params[':genre'] = $genre;
-    }
-
-    // Apply any filters
-    if (!empty($filters)) {
-        $query .= " WHERE " . implode(" AND ", $filters);
-    }
-
-    // Group the results by book_id
-    $query .= " GROUP BY b.book_id ORDER BY b.title ASC";
-
-    $stmt = self::$pdo->prepare($query);
-    foreach ($params as $key => $value) {
-        $stmt->bindValue($key, $value);
-    }
-    $stmt->execute();
-    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-    // Convert the concatenated genres string into an array
-    foreach ($result as &$book) {
-        $book['genres'] = $book['genres'] ? explode(',', $book['genres']) : [];
-    }
-
-    return $result;
-}
 
     public function getAllGenres()
     {
         $query = "SELECT genre_id, name FROM Genres";
-    $stmt = self::$pdo->prepare($query);
-    $stmt->execute();
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
 
-    $genres = [];
-    while ($row = $stmt->fetch()) {
-        $genres[] = [
+        $genres = [];
+        while ($row = $stmt->fetch()) {
+            $genres[] = [
             'id' => $row['genre_id'],
             'name' => $row['name']
-        ];
-    }
+            ];
+        }
 
         return $genres;
     }
@@ -130,7 +131,6 @@ class BookModel extends Model
         
     }
 
-
     public function deleteBook(int $id) 
     {
         $query = "DELETE FROM Books WHERE book_id = :book_id";
@@ -157,23 +157,23 @@ class BookModel extends Model
 
         foreach ($book["genres"] as $genreId) {
         $this->insertBookGenres($bookId, $genreId);
-    }
+         }
 
         return $this->getBookById($bookId);
     }
 
     public function insertBookGenres($bookId, $genreId)
     {
-    $query = "INSERT INTO book_genres (book_id, genre_id) VALUES (:book_id, :genre_id)";
-    $stmt = self::$pdo->prepare($query);
-    $stmt->execute([':book_id' => $bookId, ':genre_id' => $genreId]);
+        $query = "INSERT INTO book_genres (book_id, genre_id) VALUES (:book_id, :genre_id)";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute([':book_id' => $bookId, ':genre_id' => $genreId]);
 
-    return true;
+        return true;
     }
 
     public function updateBook($id, $book)
     {
-    $query = "UPDATE Books
+        $query = "UPDATE Books
               SET title = :title,
                   description = :description,
                   author = :author,
@@ -181,37 +181,35 @@ class BookModel extends Model
                   cover_image = :cover_image
               WHERE book_id = :id";
 
-    $statement = self::$pdo->prepare($query);
-    $statement->execute([
+        $statement = self::$pdo->prepare($query);
+        $statement->execute([
         "id" => $id,
         "title" => $book["title"],
         "description" => $book["description"],
         "author" => $book["author"],
         "publication_year" => $book["publication_year"],
         "cover_image" => $book["cover_image"]
-    ]);
+        ]);
 
-    // update the genres if provided
-    if (isset($book["genres"])) {
+        // update the genres if provided
+        if (isset($book["genres"])) {
         $this->updateBookGenres($id, $book["genres"]);
-    }
+        }
 
-      return $this->getBookById($id);
+        return $this->getBookById($id);
     }
 
     public function updateBookGenres($bookId, $genres)
     {
-    $deleteQuery = "DELETE FROM book_genres WHERE book_id = :book_id";
-    $deleteStmt = self::$pdo->prepare($deleteQuery);
-    $deleteStmt->execute(["book_id" => $bookId]);
+        $deleteQuery = "DELETE FROM book_genres WHERE book_id = :book_id";
+        $deleteStmt = self::$pdo->prepare($deleteQuery);
+        $deleteStmt->execute(["book_id" => $bookId]);
 
-    // Re-insert the new genres for the book using the insertBookGenres method
-    foreach ($genres as $genreId) {
+        // Re-insert the new genres for the book
+        foreach ($genres as $genreId) {
         $this->insertBookGenres($bookId, $genreId);
-    }
+        }
 
-    return true;
+        return true;
     }
-
-       
 }
