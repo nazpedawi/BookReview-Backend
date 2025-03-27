@@ -16,22 +16,38 @@ class UserController extends Controller
     }
 
     /**
-     * Create a new user
+     * Create a new user/ sign up
      */
-    function create()
-    {
-        // Get data from $_POST request
-        $data = $this->decodePostData();
+    public function create()
+{
+    // Get data from $_POST request
+    $data = $this->decodePostData();
 
-        // Validate input (ensure necessary fields are present)
-        $this->validateInput(["firstName", "lastName", "username", "password", "email"], $data);
+    // Validate input (ensure necessary fields are present)
+    $this->validateInput(["firstName", "lastName", "username", "password", "confirmPassword", "email"], $data);
 
-        // Save to DB
-        $newUser = $this->userModel->create($data);
-
-        ResponseService::Send(["success" => true, "message" => "User created successfully."]);
+    // Check if passwords match
+    if ($data['password'] !== $data['confirmPassword']) {
+        ResponseService::Error("Passwords do not match.", 400);
+        return;
     }
 
+    // Check if the username or email already exists
+    if ($this->userModel->isUsernameOrEmailTaken($data['username'], $data['email'])) {
+        ResponseService::Error("Username or Email already taken.", 401);
+        return;
+    }
+
+    // Remove confirmPassword from data before saving to DB
+    unset($data['confirmPassword']);
+
+    // Create the new user
+    $newUser = $this->userModel->create($data);
+
+    if ($newUser) {
+        ResponseService::Send(["success" => true, "message" => "User created successfully."]);
+    }
+}
     /**
      * Authenticate a user
      */

@@ -59,6 +59,15 @@ class UserModel extends Model
         return null;
     }
 
+    public function isUsernameOrEmailTaken($username, $email)
+    {
+        $query = "SELECT COUNT(*) FROM Users WHERE username = :username OR email = :email";
+        $statement = self::$pdo->prepare($query);
+        $statement->execute(["username" => $username, "email" => $email]);
+
+        return $statement->fetchColumn() > 0;
+    }
+
     
     
 }

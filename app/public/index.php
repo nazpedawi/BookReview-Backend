@@ -33,11 +33,10 @@ ResponseService::SetCorsHeaders();
 // top level fail-safe try/catch
 try {
 
-    // get all books
+    // get all books or get filtered books
     Route::add('/books', function () {
         $bookController = new BookController();
         
-        // Get query parameters
         $search = $_GET['search'] ?? null;
         $genre = $_GET['genre'] ?? null;
     
@@ -55,7 +54,7 @@ try {
         $bookController = new BookController();
         $reviewController = new ReviewController();
 
-        sleep(2); // to simulate a loading spinenr in the UI
+        sleep(2); // to simulate a loading spinner in the frontend/UI
         
         $book = $bookController->getBookById($id);
         if ($book) {

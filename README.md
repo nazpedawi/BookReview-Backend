@@ -1,9 +1,13 @@
-# User Credentials for Book Review Website - Web Development 2 Project Backend
+# Book Review Website - Backend
 
-## Admin User
-**Username**: Janesmith  
-**Password**: password123  
+## Start the API loccaly
 
-## Regular User
-**Username**: Johndoe  
-**Password**: password456  
+```bash
+docker compose up
+```
+
+## If you want to stop the containers, press Ctrl+C. Or run:
+
+```bash
+docker compose down
+```

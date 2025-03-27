@@ -72,7 +72,8 @@ class BookController extends Controller
     {
     // Check if the file was uploaded without errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Error uploading the cover image.");
+        ResponseService::Error("Error uploading the cover image.", 400);
+        return false; // Stop execution
     }
 
     // Set the upload directory and file path
@@ -82,12 +83,14 @@ class BookController extends Controller
     // Validate file type (you can extend this validation)
     $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
     if (!in_array($file['type'], $allowedTypes)) {
-        throw new Exception("Invalid file type. Only JPG, JPEG, PNG and WEBP files are allowed.");
+        ResponseService::Error("Invalid file type. Only JPG, JPEG, PNG, and WEBP files are allowed.", 400);
+        return false; // Stop execution
     }
 
     // Move the uploaded file to the server directory
     if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
-        throw new Exception("Failed to move the uploaded file.");
+        ResponseService::Error("Failed to move the uploaded file.", 500);
+        return false; // Stop execution
     }
 
     // Return the path of the uploaded file

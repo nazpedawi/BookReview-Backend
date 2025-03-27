@@ -55,8 +55,8 @@ class BookModel extends Model
     // Filter by genre if provided
     if (!empty($genre)) {
         // Only include books that have the given genre
-        $filters[] = "g.name LIKE :genre";
-        $params[':genre'] = '%' . $genre . '%';
+        $filters[] = "g.name = :genre";
+        $params[':genre'] = $genre;
     }
 
     // Apply any filters
@@ -82,9 +82,6 @@ class BookModel extends Model
     return $result;
 }
 
-
-
-
     public function getAllGenres()
     {
         $query = "SELECT genre_id, name FROM Genres";
@@ -104,7 +101,6 @@ class BookModel extends Model
 
     public function getBookById(int $id)
     {
-            // Fetch book details
             $query = "SELECT book_id, title, description, author, publication_year, cover_image
                       FROM Books
                       WHERE book_id = :id";
