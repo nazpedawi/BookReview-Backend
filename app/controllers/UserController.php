@@ -50,7 +50,7 @@ class UserController extends Controller
             $token = $this->generateJWT($user);
             ResponseService::Send(['token' => $token, 'user' => $user]);
         } else {
-            ResponseService::Error('Invalid username or password', 401);
+            ResponseService::Error('Invalid username or password, Please try again', 401);
         }
     }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
             'iat' => $issuedAt,
             'exp' => $expire,
             'user' => [
-                'id' => $user['user_id'],
+                'user_id' => $user['user_id'],
                 'username' => $user['username'],
                 'role' => $user['role']
             ]
