@@ -1,6 +1,6 @@
 # Book Review Website - Backend
 
-## Start the API loccaly
+## Start the API locally
 
 ```bash
 docker compose up
